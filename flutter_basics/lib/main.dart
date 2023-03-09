@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './placeholder.dart';
+import './button.dart';
 
 void main() => runApp(MyApp());
 
@@ -33,8 +34,8 @@ class _MyAppState extends State<MyApp> {
         body: Column(
           children: [
             Counter(text: "Current count: ", counter: _count),
-            ElevatedButton(onPressed: _increment, child: Text('Increment')),
-            ElevatedButton(onPressed: _decrement, child: Text('Decrement')),
+            Button(handler: _increment, text: 'Increment'),
+            Button(handler: _decrement, text: 'Decrement'),
           ],
         ),
       ),
