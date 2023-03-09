@@ -2,9 +2,26 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
-  void answerQuestion() {
-    print("pressed");
+class MyApp extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return MyAppState();
+  }
+}
+
+class MyAppState extends State<MyApp> {
+  var count = 0;
+
+  void increment() {
+    setState(() {
+      count++;
+    });
+  }
+
+  void decrease() {
+    setState(() {
+      count--;
+    });
   }
 
   @override
@@ -15,10 +32,9 @@ class MyApp extends StatelessWidget {
           title: Text("My first app"),
         ),
         body: Column(children: [
-          Text('text 1'),
-          Text('text 2'),
-          ElevatedButton(
-              onPressed: answerQuestion, child: Text("Click me baby")),
+          Text("$count"),
+          ElevatedButton(onPressed: increment, child: Text("increment")),
+          ElevatedButton(onPressed: decrease, child: Text('decrease'))
         ]),
       ),
     );
