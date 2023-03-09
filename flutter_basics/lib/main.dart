@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './placeholder.dart';
 
 void main() => runApp(MyApp());
 
@@ -31,7 +32,7 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(title: Text("Flutter basics")),
         body: Column(
           children: [
-            Text("$_count"),
+            Counter(text: "Current count: ", counter: _count),
             ElevatedButton(onPressed: _increment, child: Text('Increment')),
             ElevatedButton(onPressed: _decrement, child: Text('Decrement')),
           ],
