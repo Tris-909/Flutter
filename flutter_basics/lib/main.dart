@@ -5,22 +5,22 @@ void main() => runApp(MyApp());
 class MyApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return MyAppState();
+    return _MyAppState();
   }
 }
 
-class MyAppState extends State<MyApp> {
-  var count = 0;
+class _MyAppState extends State<MyApp> {
+  var _count = 0;
 
-  void increment() {
+  void _increment() {
     setState(() {
-      count++;
+      _count++;
     });
   }
 
-  void decrease() {
+  void _decrement() {
     setState(() {
-      count--;
+      _count--;
     });
   }
 
@@ -28,14 +28,14 @@ class MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text("My first app"),
+        appBar: AppBar(title: Text("Flutter basics")),
+        body: Column(
+          children: [
+            Text("$_count"),
+            ElevatedButton(onPressed: _increment, child: Text('Increment')),
+            ElevatedButton(onPressed: _decrement, child: Text('Decrement')),
+          ],
         ),
-        body: Column(children: [
-          Text("$count"),
-          ElevatedButton(onPressed: increment, child: Text("increment")),
-          ElevatedButton(onPressed: decrease, child: Text('decrease'))
-        ]),
       ),
     );
   }
