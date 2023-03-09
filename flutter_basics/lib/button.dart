@@ -13,6 +13,7 @@ class Button extends StatelessWidget {
         onPressed: handler,
         child: Text(
           text,
+          style: TextStyle(color: Colors.white),
         ),
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(Colors.pink),
