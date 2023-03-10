@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import './placeholder.dart';
 import './button.dart';
@@ -12,14 +14,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var _count = 0 as num;
-  var listOfButtons = [
+  num _count = 0;
+  int result = 0;
+  final listOfButtons = [
     {"text": "Increment"},
-    {
-      "text": "Decrement",
-    },
+    {"text": "Decrement"},
     {"text": "Multiply By 2"},
-    {"text": "Divided By 2"}
+    {"text": "Divided By 2"},
   ];
 
   void _increment() {
@@ -58,6 +59,34 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  void initState() {
+    super.initState();
+    setState(() {
+      result = new Random().nextInt(100);
+    });
+  }
+
+  resetAppState() {
+    setState(() {
+      _count = 0;
+      result = new Random().nextInt(100);
+    });
+  }
+
+  String get getEmotion {
+    var emotion;
+    if (_count > 50) {
+      emotion = "SUPAR HOT";
+    } else if (_count <= 50 && _count > 0) {
+      emotion = "MEH";
+    } else if (_count <= 0 && _count >= -10) {
+      emotion = "COLDDD";
+    } else {
+      emotion = "...";
+    }
+    return emotion;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -66,11 +95,31 @@ class _MyAppState extends State<MyApp> {
         body: Column(
           children: [
             Counter(text: "Current count: ", counter: _count),
+            Text("Result $result"),
+            if (_count == result)
+              Text(
+                "YOU WIN",
+                style: TextStyle(fontSize: 28, color: Colors.red),
+              ),
+            Text(getEmotion,
+                style: TextStyle(fontSize: 20, color: Colors.blue)),
             ...listOfButtons
                 .map((button) => new Button(
                     handler: () => decideButtonFunc(button["text"]),
-                    text: button["text"]))
-                .toList()
+                    text: button["text"] as String))
+                .toList(),
+            Container(
+              child: ElevatedButton(
+                onPressed: resetAppState,
+                child: Text("Reset"),
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.green),
+                ),
+              ),
+              width: double.infinity,
+              margin: EdgeInsets.all(50),
+            )
           ],
         ),
       ),

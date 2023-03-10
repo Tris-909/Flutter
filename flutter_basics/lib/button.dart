@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Button extends StatelessWidget {
-  final Function handler;
-  final String text;
+  final Function? handler;
+  final String? text;
 
   Button({this.handler, this.text});
 
@@ -10,9 +10,9 @@ class Button extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: ElevatedButton(
-        onPressed: handler,
+        onPressed: () => handler!(),
         child: Text(
-          text,
+          text!,
           style: TextStyle(color: Colors.white),
         ),
         style: ButtonStyle(
