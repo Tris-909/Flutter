@@ -29,12 +29,37 @@ class MyHomePage extends StatelessWidget {
         body: Column(
           children: [
             Container(
-                child: Card(
-                  child: Container(child: Text("Chart")),
-                  color: Colors.blue,
-                ),
-                width: double.infinity,
-                color: Colors.blue),
+              child: Card(
+                child: Container(child: Text("Chart")),
+                color: Colors.blue,
+              ),
+              width: double.infinity,
+              color: Colors.blue,
+            ),
+            Card(
+              child: Container(
+                  child: Column(
+                    children: [
+                      TextField(
+                          decoration: InputDecoration(labelText: "Title :")),
+                      TextField(
+                        decoration: InputDecoration(labelText: "Amount :"),
+                      ),
+                      ElevatedButton(
+                        onPressed: () => {},
+                        child: Text(
+                          "Submit",
+                          style: TextStyle(color: Colors.purple),
+                        ),
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.white)),
+                      ),
+                    ],
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                  ),
+                  padding: EdgeInsets.all(10)),
+            ),
             Column(
               children: [
                 ...transactions.map((transaction) => Card(
@@ -71,7 +96,7 @@ class MyHomePage extends StatelessWidget {
               ],
             )
           ],
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
         ));
   }
 }
