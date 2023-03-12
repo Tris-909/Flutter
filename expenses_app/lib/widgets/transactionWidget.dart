@@ -15,14 +15,25 @@ class TransactionState extends State {
     Transaction(id: "3", title: 'Title 3', amount: 20.00, date: DateTime.now()),
   ];
 
+  void addNewTransaction(String title, double amount) {
+    final newTransaction = Transaction(
+      title: title,
+      amount: amount,
+      date: DateTime.now(),
+      id: DateTime.now().toString(),
+    );
+
+    setState(() {
+      transactions.add(newTransaction);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TransactionForm(),
-        TransactionList(
-          transactions: transactions,
-        ),
+        TransactionForm(handler: addNewTransaction),
+        TransactionList(transactions: transactions),
       ],
     );
   }

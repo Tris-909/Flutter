@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 class TransactionForm extends StatelessWidget {
   final textController = TextEditingController();
   final amountController = TextEditingController();
+  Function handler;
+
+  TransactionForm({this.handler});
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +24,8 @@ class TransactionForm extends StatelessWidget {
               controller: amountController,
             ),
             ElevatedButton(
-              onPressed: () =>
-                  {print("${textController.text} ${amountController.text}")},
+              onPressed: () => handler(
+                  textController.text, double.parse(amountController.text)),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
               ),
