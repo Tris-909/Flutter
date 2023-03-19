@@ -11,7 +11,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Flutter App",
+      title: "Personal Expenses",
+      theme: ThemeData(
+        primarySwatch: Colors.red,
+        accentColor: Colors.amber,
+      ),
       home: MyHomePage(),
     );
   }
@@ -57,11 +61,14 @@ class MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Flutter App"), actions: <Widget>[
-        IconButton(
-            onPressed: () => startNewTransaction(context),
-            icon: Icon(Icons.add))
-      ]),
+      appBar: AppBar(
+        title: Text("Personal Expenses"),
+        actions: <Widget>[
+          IconButton(
+              onPressed: () => startNewTransaction(context),
+              icon: Icon(Icons.add))
+        ],
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
