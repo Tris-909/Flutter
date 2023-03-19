@@ -17,22 +17,28 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Flutter App"),
-        ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              width: double.infinity,
+      appBar: AppBar(title: Text("Flutter App"), actions: <Widget>[
+        IconButton(onPressed: () => {}, icon: Icon(Icons.add))
+      ]),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            width: double.infinity,
+            color: Colors.blue,
+            child: Card(
               color: Colors.blue,
-              child: Card(
-                color: Colors.blue,
-                child: Container(child: Text("Chart")),
-              ),
+              child: Container(child: Text("Chart")),
             ),
-            TransactionWidget()
-          ],
-        ));
+          ),
+          TransactionWidget()
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => {},
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
   }
 }

@@ -7,6 +7,17 @@ class TransactionForm extends StatelessWidget {
 
   TransactionForm({this.handler});
 
+  submitTransaction() {
+    var textValue = textController.text;
+    var amountValue = double.parse(amountController.text);
+
+    if (textValue.isEmpty || amountValue <= 0) {
+      return "";
+    }
+
+    handler(textController.text, double.parse(amountController.text));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -22,10 +33,10 @@ class TransactionForm extends StatelessWidget {
             TextField(
               decoration: InputDecoration(labelText: "Amount :"),
               controller: amountController,
+              keyboardType: TextInputType.number,
             ),
             ElevatedButton(
-              onPressed: () => handler(
-                  textController.text, double.parse(amountController.text)),
+              onPressed: submitTransaction,
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
               ),
