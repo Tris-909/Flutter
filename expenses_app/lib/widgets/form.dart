@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 
-class TransactionForm extends StatelessWidget {
+class TransactionForm extends StatefulWidget {
+  final Function handler;
+
+  TransactionForm(this.handler);
+
+  @override
+  TransactionFormState createState() => TransactionFormState();
+}
+
+class TransactionFormState extends State<TransactionForm> {
   final textController = TextEditingController();
   final amountController = TextEditingController();
-  Function handler;
-
-  TransactionForm({this.handler});
 
   submitTransaction() {
     var textValue = textController.text;
@@ -15,7 +21,8 @@ class TransactionForm extends StatelessWidget {
       return "";
     }
 
-    handler(textController.text, double.parse(amountController.text));
+    widget.handler(textController.text, double.parse(amountController.text));
+    Navigator.of(context).pop();
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './models/transaction.dart';
 import './widgets/transactionWidget.dart';
+import './widgets//form.dart';
 
 void main() {
   runApp(MyApp());
@@ -9,16 +10,57 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: "Flutter App", home: MyHomePage());
+    return MaterialApp(
+      title: "Flutter App",
+      home: MyHomePage(),
+    );
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
+  @override
+  MyHomePageState createState() => MyHomePageState();
+}
+
+class MyHomePageState extends State<MyHomePage> {
+  List<Transaction> transactions = [
+    Transaction(id: "1", title: 'Title 1', amount: 10.00, date: DateTime.now()),
+    Transaction(id: "2", title: 'Title 2', amount: 15.00, date: DateTime.now()),
+    Transaction(id: "3", title: 'Title 3', amount: 20.00, date: DateTime.now()),
+  ];
+
+  void addNewTransaction(String title, double amount) {
+    final newTransaction = Transaction(
+      title: title,
+      amount: amount,
+      date: DateTime.now(),
+      id: DateTime.now().toString(),
+    );
+
+    setState(() {
+      transactions.add(newTransaction);
+    });
+  }
+
+  void startNewTransaction(BuildContext ctx) {
+    showModalBottomSheet(
+        context: ctx,
+        builder: (_) {
+          return GestureDetector(
+            onTap: () {},
+            behavior: HitTestBehavior.opaque,
+            child: TransactionForm(addNewTransaction),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Flutter App"), actions: <Widget>[
-        IconButton(onPressed: () => {}, icon: Icon(Icons.add))
+        IconButton(
+            onPressed: () => startNewTransaction(context),
+            icon: Icon(Icons.add))
       ]),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -31,12 +73,12 @@ class MyHomePage extends StatelessWidget {
               child: Container(child: Text("Chart")),
             ),
           ),
-          TransactionWidget()
+          TransactionWidget(transactions: transactions)
         ],
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () => {},
+        onPressed: () => startNewTransaction(context),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
