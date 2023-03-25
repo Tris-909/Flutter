@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TransactionForm extends StatefulWidget {
   final Function handler;
@@ -12,6 +13,7 @@ class TransactionForm extends StatefulWidget {
 class TransactionFormState extends State<TransactionForm> {
   final textController = TextEditingController();
   final amountController = TextEditingController();
+  DateTime choosenDate;
 
   submitTransaction() {
     var textValue = textController.text;
@@ -21,8 +23,26 @@ class TransactionFormState extends State<TransactionForm> {
       return "";
     }
 
-    widget.handler(textController.text, double.parse(amountController.text));
+    widget.handler(
+        textController.text, double.parse(amountController.text), choosenDate);
     Navigator.of(context).pop();
+  }
+
+  presentDatePicker() {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(1900),
+            lastDate: DateTime.now())
+        .then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      } else {
+        setState(() {
+          choosenDate = pickedDate;
+        });
+      }
+    });
   }
 
   @override
@@ -42,14 +62,27 @@ class TransactionFormState extends State<TransactionForm> {
               controller: amountController,
               keyboardType: TextInputType.number,
             ),
+            Container(
+              height: 70,
+              child: Row(
+                children: [
+                  Expanded(
+                      child: Text(choosenDate == null
+                          ? "No Date Choosen"
+                          : DateFormat.yMd().format(choosenDate))),
+                  ElevatedButton(
+                      onPressed: presentDatePicker, child: Text('choose Date'))
+                ],
+              ),
+            ),
             ElevatedButton(
               onPressed: submitTransaction,
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
               ),
               child: const Text(
                 "Submit",
-                style: TextStyle(color: Colors.purple),
+                style: TextStyle(color: Colors.white),
               ),
             ),
           ],
