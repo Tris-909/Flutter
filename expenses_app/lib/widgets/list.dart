@@ -4,8 +4,9 @@ import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
   List<Transaction> transactions;
+  Function deleteTransaction;
 
-  TransactionList({@required this.transactions});
+  TransactionList({@required this.transactions, this.deleteTransaction});
 
   @override
   Widget build(BuildContext context) {
@@ -34,80 +35,37 @@ class TransactionList extends StatelessWidget {
                       elevation: 5,
                       margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
                       child: ListTile(
-                        leading: CircleAvatar(
-                          radius: 30,
-                          child: Padding(
-                            padding: EdgeInsets.all(5),
-                            child: FittedBox(
-                              child: Text(
-                                " \$${transaction.amount.toStringAsFixed(2)}",
+                          leading: CircleAvatar(
+                            radius: 30,
+                            child: Padding(
+                              padding: EdgeInsets.all(5),
+                              child: FittedBox(
+                                child: Text(
+                                  " \$${transaction.amount.toStringAsFixed(2)}",
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        title: Text(
-                          transaction.title,
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColor),
-                        ),
-                        subtitle: Text(
-                          DateFormat.yMd().add_jm().format(transaction.date),
-                          style: const TextStyle(color: Colors.grey),
-                        ),
-                      ),
+                          title: Text(
+                            transaction.title,
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).primaryColor),
+                          ),
+                          subtitle: Text(
+                            DateFormat.yMd().add_jm().format(transaction.date),
+                            style: const TextStyle(color: Colors.grey),
+                          ),
+                          trailing: IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () {
+                              deleteTransaction(transaction.id);
+                            },
+                          )),
                     ),
                   ),
                 ],
               ));
   }
 }
-
-// ListView(
-//               children: [
-//                 ...transactions.map(
-//                   (transaction) => Card(
-//                     child: Row(
-//                       children: [
-//                         Container(
-//                           margin: const EdgeInsets.symmetric(
-//                               vertical: 10, horizontal: 15),
-//                           decoration: BoxDecoration(
-//                               border: Border.all(
-//                                   width: 2,
-//                                   color: Theme.of(context).primaryColor)),
-//                           padding: const EdgeInsets.all(5),
-//                           child: Text(
-//                             "${transaction.amount.toStringAsFixed(2)} \$",
-//                             style: TextStyle(
-//                               fontWeight: FontWeight.bold,
-//                               fontSize: 20,
-//                               color: Theme.of(context).primaryColor,
-//                             ),
-//                           ),
-//                         ),
-//                         Column(
-//                           crossAxisAlignment: CrossAxisAlignment.start,
-//                           children: [
-//                             Text(
-//                               transaction.title,
-//                               style: TextStyle(
-//                                   fontSize: 20,
-//                                   fontWeight: FontWeight.bold,
-//                                   color: Theme.of(context).primaryColor),
-//                             ),
-//                             Text(
-//                               DateFormat.yMd()
-//                                   .add_jm()
-//                                   .format(transaction.date),
-//                               style: const TextStyle(color: Colors.grey),
-//                             )
-//                           ],
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 )
-//               ],
-//             ),
