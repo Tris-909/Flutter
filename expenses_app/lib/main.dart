@@ -31,7 +31,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
-  List<Transaction> transactions = [];
+  List<Transaction> transactions = [
+    // Transaction(id: "1", title: "title1", amount: 10.55, date: DateTime.now()),
+    // Transaction(id: "2", title: "title2", amount: 12.55, date: DateTime.now()),
+    // Transaction(id: "3", title: "title3", amount: 13.55, date: DateTime.now()),
+    // Transaction(id: "4", title: "title4", amount: 14.55, date: DateTime.now()),
+    // Transaction(id: "5", title: "title5", amount: 15.55, date: DateTime.now()),
+    // Transaction(id: "6", title: "title6", amount: 16.55, date: DateTime.now()),
+    // Transaction(id: "7", title: "title7", amount: 17.55, date: DateTime.now()),
+  ];
 
   List<Transaction> get recentTransactions {
     return transactions.where((tx) {
@@ -75,21 +83,36 @@ class MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      title: Text("Personal Expenses"),
+      actions: <Widget>[
+        IconButton(
+            onPressed: () => startNewTransaction(context),
+            icon: Icon(Icons.add))
+      ],
+    );
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Personal Expenses"),
-        actions: <Widget>[
-          IconButton(
-              onPressed: () => startNewTransaction(context),
-              icon: Icon(Icons.add))
-        ],
-      ),
+      appBar: appBar,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Chart(recentTransactions),
-          TransactionWidget(
-              transactions: transactions, deleteTransaction: removeTransaction)
+          Container(
+            height: (MediaQuery.of(context).size.height -
+                    appBar.preferredSize.height -
+                    MediaQuery.of(context).padding.top) *
+                0.3,
+            child: Chart(recentTransactions),
+          ),
+          Container(
+            height: (MediaQuery.of(context).size.height -
+                    appBar.preferredSize.height -
+                    MediaQuery.of(context).padding.top) *
+                0.7,
+            child: TransactionWidget(
+                transactions: transactions,
+                deleteTransaction: removeTransaction),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
