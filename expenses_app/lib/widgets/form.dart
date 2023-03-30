@@ -47,45 +47,53 @@ class TransactionFormState extends State<TransactionForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            TextField(
-              decoration: InputDecoration(labelText: "Title :"),
-              controller: textController,
-            ),
-            TextField(
-              decoration: InputDecoration(labelText: "Amount :"),
-              controller: amountController,
-              keyboardType: TextInputType.number,
-            ),
-            Container(
-              height: 70,
-              child: Row(
-                children: [
-                  Expanded(
-                      child: Text(choosenDate == null
-                          ? "No Date Choosen"
-                          : DateFormat.yMd().format(choosenDate))),
-                  ElevatedButton(
-                      onPressed: presentDatePicker, child: Text('choose Date'))
-                ],
+    return SingleChildScrollView(
+      child: Card(
+        child: Container(
+          padding: EdgeInsets.only(
+            top: 10,
+            left: 10,
+            right: 10,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              TextField(
+                decoration: InputDecoration(labelText: "Title :"),
+                controller: textController,
               ),
-            ),
-            ElevatedButton(
-              onPressed: submitTransaction,
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+              TextField(
+                decoration: InputDecoration(labelText: "Amount :"),
+                controller: amountController,
+                keyboardType: TextInputType.number,
               ),
-              child: const Text(
-                "Submit",
-                style: TextStyle(color: Colors.white),
+              Container(
+                height: 70,
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: Text(choosenDate == null
+                            ? "No Date Choosen"
+                            : DateFormat.yMd().format(choosenDate))),
+                    ElevatedButton(
+                        onPressed: presentDatePicker,
+                        child: Text('choose Date'))
+                  ],
+                ),
               ),
-            ),
-          ],
+              ElevatedButton(
+                onPressed: submitTransaction,
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                ),
+                child: const Text(
+                  "Submit",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
