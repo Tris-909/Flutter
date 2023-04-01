@@ -78,7 +78,7 @@ class TransactionFormState extends State<TransactionForm> {
                             : DateFormat.yMd().format(choosenDate))),
                     ElevatedButton(
                         onPressed: presentDatePicker,
-                        child: Text('choose Date'))
+                        child: const Text('choose Date'))
                   ],
                 ),
               ),

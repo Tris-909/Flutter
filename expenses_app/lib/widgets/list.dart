@@ -23,10 +23,10 @@ class TransactionList extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                Text("No Transactions were added yet!"),
+                const Text("No Transactions were added yet!"),
               ],
             );
           }))
@@ -35,12 +35,12 @@ class TransactionList extends StatelessWidget {
             itemBuilder: (ctx, index) {
               return Card(
                 elevation: 5,
-                margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
                 child: ListTile(
                   leading: CircleAvatar(
                     radius: 30,
                     child: Padding(
-                      padding: EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
                       child: FittedBox(
                         child: Text(
                           " \$${transactions[index].amount.toStringAsFixed(2)}",
@@ -61,7 +61,7 @@ class TransactionList extends StatelessWidget {
                   ),
                   trailing: MediaQuery.of(context).size.width > 500
                       ? TextButton.icon(
-                          icon: Icon(Icons.delete),
+                          icon: const Icon(Icons.delete),
                           label: const Text(
                             "Delete",
                             style: TextStyle(color: Colors.red),
@@ -70,7 +70,7 @@ class TransactionList extends StatelessWidget {
                               deleteTransaction(transactions[index].id),
                         )
                       : IconButton(
-                          icon: Icon(Icons.delete),
+                          icon: const Icon(Icons.delete),
                           onPressed: () {
                             deleteTransaction(transactions[index].id);
                           },
