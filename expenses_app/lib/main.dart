@@ -124,31 +124,38 @@ class MyHomePageState extends State<MyHomePage> {
     ];
   }
 
+  Widget _buildIOSAppBar() {
+    return CupertinoNavigationBar(
+      middle: const Text("Personal Expenses"),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          GestureDetector(
+            child: Icon(CupertinoIcons.add),
+            onTap: () => startNewTransaction(context),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAndroidAppBar() {
+    return AppBar(
+      title: const Text("Personal Expenses"),
+      actions: <Widget>[
+        IconButton(
+            onPressed: () => startNewTransaction(context),
+            icon: Icon(Icons.add))
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
-    final PreferredSizeWidget appBar = Platform.isIOS
-        ? CupertinoNavigationBar(
-            middle: const Text("Personal Expenses"),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                GestureDetector(
-                  child: Icon(CupertinoIcons.add),
-                  onTap: () => startNewTransaction(context),
-                )
-              ],
-            ),
-          )
-        : AppBar(
-            title: const Text("Personal Expenses"),
-            actions: <Widget>[
-              IconButton(
-                  onPressed: () => startNewTransaction(context),
-                  icon: Icon(Icons.add))
-            ],
-          );
+    final PreferredSizeWidget appBar =
+        Platform.isIOS ? _buildIOSAppBar() : _buildAndroidAppBar();
     final txListWidget = Container(
       height: (MediaQuery.of(context).size.height -
               appBar.preferredSize.height -
