@@ -25,7 +25,7 @@ class MealDetailScreen extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
               SizedBox(
-                height: 10,
+                height: 20,
               ),
               Center(
                 child: Text(
@@ -46,10 +46,11 @@ class MealDetailScreen extends StatelessWidget {
                   widthFactor: 0.8,
                   child: Card(
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        side: BorderSide(
-                          color: Colors.black87,
-                        )),
+                      borderRadius: BorderRadius.circular(15),
+                      side: BorderSide(
+                        color: Colors.black87,
+                      ),
+                    ),
                     child: Container(
                       height: 200,
                       padding: EdgeInsets.all(10),
@@ -108,20 +109,23 @@ class MealDetailScreen extends StatelessWidget {
                         height: 200,
                         padding: EdgeInsets.all(10),
                         child: ListView.builder(
-                          itemBuilder: (ctx, index) => Container(
-                              margin: EdgeInsets.all(5),
-                              child: ListTile(
-                                leading: CircleAvatar(
-                                  radius: 25,
-                                  child: Text(
-                                    '# ${index}',
-                                    style: TextStyle(fontSize: 20),
+                          itemBuilder: (ctx, index) {
+                            return Container(
+                                margin: EdgeInsets.all(5),
+                                child: ListTile(
+                                  leading: CircleAvatar(
+                                    radius: 25,
+                                    child: Text(
+                                      '# ${index + 1}',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    backgroundColor: Colors.pink,
                                   ),
-                                  backgroundColor: Colors.pink,
-                                ),
-                                title: Text(steps[index],
-                                    style: TextStyle(fontSize: 20)),
-                              )),
+                                  title: Text(steps[index],
+                                      style: TextStyle(fontSize: 20)),
+                                ));
+                          },
+                          itemCount: steps.length,
                         )),
                   ),
                 ),
