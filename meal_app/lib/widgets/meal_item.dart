@@ -9,6 +9,8 @@ class MealItem extends StatelessWidget {
   final Complexity complexity;
   final Affordability affordability;
   final String id;
+  final List<String> ingredients;
+  final List<String> steps;
 
   const MealItem({
     @required this.title,
@@ -17,6 +19,8 @@ class MealItem extends StatelessWidget {
     @required this.complexity,
     @required this.affordability,
     @required this.id,
+    @required this.ingredients,
+    @required this.steps,
   });
 
   String get complexityText {
@@ -48,6 +52,10 @@ class MealItem extends StatelessWidget {
   void openDetailMealPage(BuildContext context) {
     Navigator.of(context).pushNamed(MealDetailScreen.routeName, arguments: {
       'id': id,
+      'title': title,
+      'imageUrl': imageUrl,
+      'ingredients': ingredients,
+      'steps': steps,
     });
   }
 

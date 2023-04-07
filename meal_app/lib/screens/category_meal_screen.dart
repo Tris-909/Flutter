@@ -29,6 +29,8 @@ class CategoryMealScreen extends StatelessWidget {
             complexity: filteredMealList[index].complexity,
             affordability: filteredMealList[index].affordability,
             id: filteredMealList[index].id,
+            ingredients: filteredMealList[index].ingredients,
+            steps: filteredMealList[index].steps,
           );
         },
         itemCount: filteredMealList.length,
