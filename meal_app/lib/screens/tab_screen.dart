@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './categories_screen.dart';
 import './favorites_screen.dart';
+import '../widgets/main_drawer.dart';
 
 class TabsScreen extends StatefulWidget {
   @override
@@ -53,6 +54,7 @@ class TabsScreenState extends State {
           ),
         ],
       ),
+      drawer: SafeArea(child: MainDrawer()),
     );
   }
 }
