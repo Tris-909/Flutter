@@ -2,36 +2,56 @@ import 'package:flutter/material.dart';
 
 class FilteredScreen extends StatefulWidget {
   static String routeName = "/filtered_meals";
+  final Function saveFilters;
+  final Map<String, bool> saveFiltersValues;
+
+  FilteredScreen(this.saveFilters, this.saveFiltersValues);
 
   @override
   FilteredScreenState createState() => FilteredScreenState();
 }
 
-class FilteredScreenState extends State {
-  bool glutenFree = false;
-  bool vegetarianFree = false;
-  bool vegan = false;
-  bool lactoseFree = false;
+class FilteredScreenState<T> extends State<FilteredScreen> {
+  Map<String, bool> filters = {
+    'glutenFree': false,
+    'vegetarianFree': false,
+    'vegan': false,
+    'lactoseFree': false
+  };
+
+  @override
+  void initState() {
+    setState(() {
+      filters = widget.saveFiltersValues;
+    });
+    super.initState();
+  }
 
   Widget buildOptionWidget(
       String title, String subTitle, bool switchValue, Function switchHandler) {
     return Padding(
-        padding: EdgeInsets.all(20),
-        child: ListTile(
-          title: Text(
-            title,
-            style: TextStyle(fontSize: 22),
-          ),
-          subtitle: Text(
-            subTitle,
-            style: TextStyle(fontSize: 22, color: Colors.grey),
-          ),
-          trailing: Switch(
-              value: switchValue,
-              onChanged: (value) {
-                switchHandler(value);
-              }),
-        ));
+      padding: EdgeInsets.all(20),
+      child: ListTile(
+        title: Text(
+          title,
+          style: TextStyle(fontSize: 22),
+        ),
+        subtitle: Text(
+          subTitle,
+          style: TextStyle(fontSize: 22, color: Colors.grey),
+        ),
+        trailing: Switch(
+            value: switchValue,
+            onChanged: (value) {
+              switchHandler(value);
+            }),
+      ),
+    );
+  }
+
+  void onSaveFilters() {
+    widget.saveFilters(filters);
+    Navigator.of(context).pushReplacementNamed('/');
   }
 
   @override
@@ -39,6 +59,12 @@ class FilteredScreenState extends State {
     return Scaffold(
       appBar: AppBar(
         title: Text('Filtered Meals'),
+        actions: [
+          IconButton(
+            onPressed: onSaveFilters,
+            icon: Icon(Icons.save),
+          )
+        ],
       ),
       body: Column(
         children: [
@@ -54,40 +80,40 @@ class FilteredScreenState extends State {
           buildOptionWidget(
             'Gluten-free',
             'Only include gluten-free meals',
-            glutenFree,
+            filters['glutenFree'],
             (newValue) {
               setState(() {
-                glutenFree = newValue;
+                filters['glutenFree'] = newValue;
               });
             },
           ),
           buildOptionWidget(
             'Lactose-free',
             'Only include lactose-free meals',
-            lactoseFree,
+            filters['lactoseFree'],
             (newValue) {
               setState(() {
-                lactoseFree = newValue;
+                filters['lactoseFree'] = newValue;
               });
             },
           ),
           buildOptionWidget(
             'Vegetarian-free',
             'Only include veegtarian-free meals',
-            vegetarianFree,
+            filters['vegetarianFree'],
             (newValue) {
               setState(() {
-                vegetarianFree = newValue;
+                filters['vegetarianFree'] = newValue;
               });
             },
           ),
           buildOptionWidget(
             'Vegan-free',
             'Only include vegan-free meals',
-            vegan,
+            filters['vegan'],
             (newValue) {
               setState(() {
-                vegan = newValue;
+                filters['vegan'] = newValue;
               });
             },
           ),
