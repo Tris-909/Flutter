@@ -4,6 +4,7 @@ import 'screens/category_meal_screen.dart';
 import 'screens/meal_detail_screen.dart';
 import 'screens/tab_screen.dart';
 import 'screens/filtered_screen.dart';
+import 'screens/favorites_screen.dart';
 import './dummy_data.dart';
 import './models/meal.dart';
 
@@ -22,6 +23,7 @@ class MyAppState extends State<MyApp> {
     'lactoseFree': false
   };
   List<Meal> available_meals = DUMMY_MEALS;
+  List<String> listOfFavorIds = [];
 
   void updateFilters(Map<String, bool> values) {
     setState(() {
@@ -42,6 +44,20 @@ class MyAppState extends State<MyApp> {
         return true;
       }).toList();
     });
+  }
+
+  void updateFavoritesList(action, id) {
+    if (action == 'Like') {
+      setState(() {
+        listOfFavorIds.add(id);
+      });
+    } else {
+      setState(() {
+        listOfFavorIds.removeWhere((currentId) => currentId == id);
+      });
+    }
+    print("in main");
+    print(listOfFavorIds);
   }
 
   @override
@@ -65,12 +81,14 @@ class MyAppState extends State<MyApp> {
       ),
       initialRoute: '/',
       routes: {
-        '/': (ctx) => TabsScreen(),
+        '/': (ctx) => TabsScreen(listOfFavorIds),
         CategoryMealScreen.routeName: (ctx) =>
             CategoryMealScreen(available_meals),
-        MealDetailScreen.routeName: (ctx) => MealDetailScreen(),
+        MealDetailScreen.routeName: (ctx) =>
+            MealDetailScreen(updateFavoritesList, listOfFavorIds),
         FilteredScreen.routeName: (ctx) =>
             FilteredScreen(updateFilters, filters),
+        FavoritesScreen.routeName: (ctx) => FavoritesScreen(listOfFavorIds),
       },
       onUnknownRoute: (settings) {
         return MaterialPageRoute(builder: (ctx) => CatergoriesScreen());

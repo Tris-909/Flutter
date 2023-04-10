@@ -1,7 +1,37 @@
 import 'package:flutter/material.dart';
 
-class MealDetailScreen extends StatelessWidget {
+class MealDetailScreen extends StatefulWidget {
   static const routeName = '/categories-meals/meal-detail';
+  Function updateFavorList;
+  List<String> FavorListIds;
+
+  MealDetailScreen(this.updateFavorList, this.FavorListIds);
+
+  @override
+  MealDetailScreenState createState() => MealDetailScreenState();
+}
+
+class MealDetailScreenState extends State<MealDetailScreen> {
+  bool isFavored = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final routeArgs =
+        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    final id = routeArgs['id'];
+    if (widget.FavorListIds.contains(id)) {
+      isFavored = true;
+    }
+  }
+
+  void updateFavor(id) {
+    setState(() {
+      isFavored = !isFavored;
+    });
+    widget.updateFavorList(isFavored ? "Like" : "UnLike", id);
+  }
 
   Widget build(BuildContext context) {
     final routeArgs =
@@ -15,10 +45,13 @@ class MealDetailScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(title: Text(title)),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).pop(id);
-          },
-          child: Icon(Icons.delete),
+          onPressed: () => updateFavor(id),
+          child: isFavored
+              ? Icon(
+                  Icons.star,
+                  color: Colors.black,
+                )
+              : Icon(Icons.star_border),
         ),
         body: Container(
           width: double.infinity,

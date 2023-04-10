@@ -4,22 +4,37 @@ import './favorites_screen.dart';
 import '../widgets/main_drawer.dart';
 
 class TabsScreen extends StatefulWidget {
+  List<String> favourIds;
+
+  TabsScreen(this.favourIds);
+
   @override
   TabsScreenState createState() => TabsScreenState();
 }
 
-class TabsScreenState extends State {
-  final List<Map<String, Object>> pages = [
-    {
-      'page': CatergoriesScreen(),
-      'title': "Categories",
-    },
-    {
-      'page': FavoritesScreen(),
-      'title': "Favories",
-    }
-  ];
+class TabsScreenState extends State<TabsScreen> {
+  List<String> favorIds;
+  List<Map<String, Object>> pages;
   int selectedPageIndex = 0;
+
+  @override
+  void initState() {
+    setState(() {
+      favorIds = widget.favourIds;
+      pages = [
+        {
+          'page': CatergoriesScreen(),
+          'title': "Categories",
+        },
+        {
+          'page': FavoritesScreen(favorIds),
+          'title': "Favories",
+        }
+      ];
+    });
+
+    super.initState();
+  }
 
   void selectPage(int index) {
     setState(() {
