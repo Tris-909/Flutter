@@ -1,0 +1,108 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "expenses_app",
+            "cwd": "expenses_app",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "expenses_app (profile mode)",
+            "cwd": "expenses_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "expenses_app (release mode)",
+            "cwd": "expenses_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "flutter_basics",
+            "cwd": "flutter_basics",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flutter_basics (profile mode)",
+            "cwd": "flutter_basics",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "flutter_basics (release mode)",
+            "cwd": "flutter_basics",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "flutter_basics_test",
+            "cwd": "flutter_basics_test",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flutter_basics_test (profile mode)",
+            "cwd": "flutter_basics_test",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "flutter_basics_test (release mode)",
+            "cwd": "flutter_basics_test",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "meal_app",
+            "cwd": "meal_app",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "meal_app (profile mode)",
+            "cwd": "meal_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "meal_app (release mode)",
+            "cwd": "meal_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "shop_app",
+            "cwd": "shop_app",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "shop_app (profile mode)",
+            "cwd": "shop_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "shop_app (release mode)",
+            "cwd": "shop_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
