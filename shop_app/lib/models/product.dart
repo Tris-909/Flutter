@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Product {
+class Product with ChangeNotifier {
   @required
   final String id;
   @required
@@ -13,11 +13,17 @@ class Product {
   bool isFavored;
 
   @override
-  Product(
-      {this.id,
-      this.title,
-      this.description,
-      this.price,
-      this.imageUrl,
-      this.isFavored = false});
+  Product({
+    this.id,
+    this.title,
+    this.description,
+    this.price,
+    this.imageUrl,
+    this.isFavored = false,
+  });
+
+  void toggleFavouriteStatus() {
+    isFavored = !isFavored;
+    notifyListeners();
+  }
 }
