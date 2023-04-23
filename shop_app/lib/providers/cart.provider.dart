@@ -20,6 +20,11 @@ class Cart extends ChangeNotifier {
     return total;
   }
 
+  void removeCartItem(String id) {
+    cartItems.removeWhere((key, value) => key == id);
+    notifyListeners();
+  }
+
   void addCartItem(CartItem newCartItem) {
     if (cartItems.containsKey(newCartItem.id)) {
       cartItems.update(
