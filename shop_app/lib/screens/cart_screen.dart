@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../providers/cart.provider.dart';
 import 'package:provider/provider.dart';
+import '../widgets/cartItem.dart';
 
 class CartScreen extends StatelessWidget {
   static const routeName = '/mycart';
@@ -13,43 +14,60 @@ class CartScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('My Cart'),
       ),
-      body: Column(children: [
-        Card(
+      body: Column(
+        children: [
+          Card(
             margin: EdgeInsets.all(15),
             child: Padding(
-                padding: EdgeInsets.all(8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Text('Total', style: TextStyle(fontSize: 20)),
-                        SizedBox(
-                          width: 10,
+              padding: EdgeInsets.all(8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text('Total', style: TextStyle(fontSize: 20)),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Chip(
+                        label: Text(
+                          '${cart.totalAmout.toStringAsFixed(2).toString()} \$',
+                          style: TextStyle(color: Colors.white),
                         ),
-                        Chip(
-                          label: Text(
-                            '${cart.totalAmout.toStringAsFixed(2).toString()} \$',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          backgroundColor: Colors.purple,
-                        ),
-                      ],
+                        backgroundColor: Colors.purple,
+                      ),
+                    ],
+                  ),
+                  ElevatedButton(
+                    child: Text(
+                      'Order Now',
+                      style: TextStyle(color: Colors.white),
                     ),
-                    ElevatedButton(
-                      child: Text(
-                        'Order Now',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.purple),
-                      ),
-                      onPressed: null,
-                    )
-                  ],
-                )))
-      ]),
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.purple),
+                    ),
+                    onPressed: null,
+                  )
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Expanded(
+              child: ListView.builder(
+            itemCount: cart.itemCount,
+            itemBuilder: (ctx, i) => CartItem(
+              id: cart.getCartItems.values.toList()[i].id,
+              title: cart.getCartItems.values.toList()[i].title,
+              price: cart.getCartItems.values.toList()[i].price,
+              quantity: cart.getCartItems.values.toList()[i].quantity,
+            ),
+          ))
+        ],
+      ),
     );
   }
 }
