@@ -12,6 +12,14 @@ class Cart extends ChangeNotifier {
     return cartItems.length;
   }
 
+  double get totalAmout {
+    double total = 0;
+    cartItems.forEach((key, cartItem) {
+      total += cartItem.price * cartItem.quantity;
+    });
+    return total;
+  }
+
   void addCartItem(CartItem newCartItem) {
     if (cartItems.containsKey(newCartItem.id)) {
       cartItems.update(
