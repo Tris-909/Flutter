@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import '../models/order.dart';
 import 'package:intl/intl.dart';
+import 'dart:math';
 
-class OrderItemWidget extends StatelessWidget {
+class OrderItemWidget extends StatefulWidget {
+  const OrderItemWidget({this.order});
+
   final OrderItem order;
 
-  OrderItemWidget({this.order});
+  @override
+  OrderItemWidgetState createState() => OrderItemWidgetState();
+}
+
+class OrderItemWidgetState extends State<OrderItemWidget> {
+  bool isExpanding = false;
 
   @override
   Widget build(BuildContext context) {
@@ -14,14 +22,33 @@ class OrderItemWidget extends StatelessWidget {
         child: Column(
           children: [
             ListTile(
-              title: Text('${order.amount} \$'),
-              subtitle:
-                  Text(DateFormat('dd MM yyyy hh:mm').format(order.createdAt)),
+              title: Text('${widget.order.amount} \$'),
+              subtitle: Text(DateFormat('dd MM yyyy hh:mm')
+                  .format(widget.order.createdAt)),
               trailing: IconButton(
-                icon: Icon(Icons.expand_more),
-                onPressed: null,
+                icon: Icon(isExpanding ? Icons.expand_more : Icons.expand_less),
+                onPressed: () {
+                  setState(() {
+                    isExpanding = !isExpanding;
+                  });
+                },
               ),
-            )
+            ),
+            if (isExpanding)
+              Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+                  height: min(widget.order.products.length * 20.0 + 100.0, 100),
+                  child: ListView(
+                    children: widget.order.products
+                        .map((product) => Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(product.title),
+                                Text('${product.quantity}x \$${product.price}')
+                              ],
+                            ))
+                        .toList(),
+                  )),
           ],
         ));
   }
