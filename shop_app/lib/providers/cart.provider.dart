@@ -25,6 +25,24 @@ class Cart extends ChangeNotifier {
     notifyListeners();
   }
 
+  void removeCartItemQuantity(String id) {
+    if (cartItems.containsKey(id)) {
+      if (cartItems[id].quantity > 1) {
+        cartItems.update(
+            id,
+            (existingCartItem) => CartItem(
+                  id: existingCartItem.id,
+                  title: existingCartItem.title,
+                  price: existingCartItem.price,
+                  quantity: existingCartItem.quantity - 1,
+                ));
+      } else {
+        cartItems.removeWhere((key, value) => key == id);
+      }
+    }
+    notifyListeners();
+  }
+
   void removeCartItem(String id) {
     cartItems.removeWhere((key, value) => key == id);
     notifyListeners();
