@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import '../providers/cart.provider.dart';
+import '../providers/order.provider.dart';
 import 'package:provider/provider.dart';
 import '../widgets/cartItem.dart';
+import './orders_screen.dart';
 
 class CartScreen extends StatelessWidget {
   static const routeName = '/mycart';
@@ -9,6 +11,7 @@ class CartScreen extends StatelessWidget {
   @override
   build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
+    final order = Provider.of<Orders>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -39,16 +42,20 @@ class CartScreen extends StatelessWidget {
                     ],
                   ),
                   ElevatedButton(
-                    child: Text(
-                      'Order Now',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.purple),
-                    ),
-                    onPressed: null,
-                  )
+                      child: Text(
+                        'Order Now',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.purple),
+                      ),
+                      onPressed: () {
+                        order.addOrders(
+                            cart.getCartItems.values.toList(), cart.totalAmout);
+                        cart.clear();
+                        Navigator.of(context).pushNamed(OrderScreen.routeName);
+                      }),
                 ],
               ),
             ),
