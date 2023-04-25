@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
+import 'package:provider/provider.dart';
+import '../providers/products.provider.dart';
 
 class EditScreen extends StatefulWidget {
   static final routeName = '/edit_product';
@@ -24,28 +26,33 @@ class EditScreenState extends State<EditScreen> {
     super.dispose();
   }
 
-  void saveForm() {
+  void saveForm(productsProvider) {
     final invalid = form.currentState.validate();
     if (!invalid) {
       return null;
     }
 
     form.currentState.save();
-    print(editProduct.title);
-    print(editProduct.price);
-    print(editProduct.description);
-    print(editProduct.imageUrl);
+    productsProvider.addProduct(
+      editProduct.title,
+      editProduct.description,
+      editProduct.imageUrl,
+      editProduct.price,
+    );
+    Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
+    final productsProvider = Provider.of<Products>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Edit Product'),
         actions: [
           IconButton(
             onPressed: () {
-              saveForm();
+              saveForm(productsProvider);
             },
             icon: Icon(Icons.save, color: Colors.green),
           )
