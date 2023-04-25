@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../screens/edit_screen.dart';
+import 'package:provider/provider.dart';
+import '../providers/products.provider.dart';
 
 class AdminItem extends StatelessWidget {
   final String id;
@@ -10,6 +12,8 @@ class AdminItem extends StatelessWidget {
 
   @override
   build(BuildContext context) {
+    final productStore = Provider.of<Products>(context, listen: false);
+
     return ListTile(
       title: Text(title),
       leading: CircleAvatar(
@@ -26,7 +30,10 @@ class AdminItem extends StatelessWidget {
                 },
                 icon: Icon(Icons.edit, color: Colors.blue)),
             IconButton(
-                onPressed: null, icon: Icon(Icons.delete, color: Colors.red)),
+                onPressed: () {
+                  productStore.deleteProduct(id);
+                },
+                icon: Icon(Icons.delete, color: Colors.red)),
           ],
         ),
       ),
