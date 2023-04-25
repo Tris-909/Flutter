@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../providers/products.provider.dart';
 import '../widgets/adminItem.dart';
 import '../widgets/appDrawer.dart';
+import './edit_screen.dart';
 
 class AdminScreen extends StatelessWidget {
   static final routeName = '/admin';
@@ -13,7 +14,11 @@ class AdminScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text("Admin Page"), actions: [
-        IconButton(onPressed: null, icon: Icon(Icons.add)),
+        IconButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(EditScreen.routeName);
+            },
+            icon: Icon(Icons.add)),
       ]),
       drawer: AppDrawer(),
       body: Padding(
