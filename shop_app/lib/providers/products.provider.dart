@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import '../models/product.dart';
+import 'dart:developer';
 
 class Products with ChangeNotifier {
   List<Product> _items = [
@@ -58,6 +59,18 @@ class Products with ChangeNotifier {
       imageUrl: imageUrl,
       isFavored: false,
     ));
+    notifyListeners();
+  }
+
+  void updateProduct(id, editProduct) {
+    final productIndex = items.indexWhere((product) => product.id == id);
+    _items[productIndex] = Product(
+      id: id,
+      title: editProduct.title,
+      description: editProduct.description,
+      imageUrl: editProduct.imageUrl,
+      price: editProduct.price,
+    );
     notifyListeners();
   }
 }

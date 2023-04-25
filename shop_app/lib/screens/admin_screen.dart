@@ -25,6 +25,7 @@ class AdminScreen extends StatelessWidget {
         padding: EdgeInsets.all(10),
         child: ListView.builder(
           itemBuilder: (ctx, index) => AdminItem(
+            id: products.items[index].id,
             title: products.items[index].title,
             imageUrl: products.items[index].imageUrl,
           ),

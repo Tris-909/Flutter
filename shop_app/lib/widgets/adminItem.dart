@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import '../screens/edit_screen.dart';
 
 class AdminItem extends StatelessWidget {
+  final String id;
   final String title;
   final String imageUrl;
 
-  AdminItem({this.title, this.imageUrl});
+  AdminItem({this.id, this.title, this.imageUrl});
 
   @override
   build(BuildContext context) {
@@ -20,7 +21,8 @@ class AdminItem extends StatelessWidget {
           children: [
             IconButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed(EditScreen.routeName);
+                  Navigator.of(context)
+                      .pushNamed(EditScreen.routeName, arguments: id);
                 },
                 icon: Icon(Icons.edit, color: Colors.blue)),
             IconButton(

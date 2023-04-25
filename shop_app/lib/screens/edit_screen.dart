@@ -17,6 +17,38 @@ class EditScreenState extends State<EditScreen> {
   final form = GlobalKey<FormState>();
   var editProduct =
       Product(id: null, title: '', price: 0, description: '', imageUrl: '');
+  var isInit = true;
+  var isEditExistingProduct = false;
+  var editProductItemId = null;
+  var inItValues = {
+    'title': '',
+    'description': '',
+    'imageUrl': '',
+    'price': ''
+  };
+
+  @override
+  void didChangeDependencies() {
+    if (isInit) {
+      final editProductId = ModalRoute.of(context).settings.arguments as String;
+
+      if (editProductId != null) {
+        editProduct = Provider.of<Products>(context, listen: false)
+            .findById(editProductId);
+        inItValues = {
+          'title': editProduct.title,
+          'description': editProduct.description,
+          'imageUrl': '',
+          'price': editProduct.price.toString()
+        };
+        imageUrlController.text = editProduct.imageUrl;
+        isEditExistingProduct = true;
+        editProductItemId = editProductId;
+      }
+    }
+    isInit = false;
+    super.didChangeDependencies();
+  }
 
   @override
   void dispose() {
@@ -32,13 +64,20 @@ class EditScreenState extends State<EditScreen> {
       return null;
     }
 
-    form.currentState.save();
-    productsProvider.addProduct(
-      editProduct.title,
-      editProduct.description,
-      editProduct.imageUrl,
-      editProduct.price,
-    );
+    if (isEditExistingProduct) {
+      form.currentState.save();
+      Provider.of<Products>(context, listen: false)
+          .updateProduct(editProductItemId, editProduct);
+    } else {
+      form.currentState.save();
+      productsProvider.addProduct(
+        editProduct.title,
+        editProduct.description,
+        editProduct.imageUrl,
+        editProduct.price,
+      );
+    }
+
     Navigator.of(context).pop();
   }
 
@@ -70,6 +109,7 @@ class EditScreenState extends State<EditScreen> {
                 onFieldSubmitted: (value) {
                   FocusScope.of(context).requestFocus(priceFocusNode);
                 },
+                initialValue: inItValues['title'],
                 validator: (value) {
                   if (value.isEmpty) {
                     return "Title is required";
@@ -88,6 +128,7 @@ class EditScreenState extends State<EditScreen> {
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: 'Price'),
+                initialValue: inItValues['price'],
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.number,
                 focusNode: priceFocusNode,
@@ -115,6 +156,7 @@ class EditScreenState extends State<EditScreen> {
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: 'Description'),
+                initialValue: inItValues['description'],
                 maxLines: 5,
                 keyboardType: TextInputType.multiline,
                 focusNode: descriptionFocusNode,
