@@ -107,10 +107,12 @@ class EditScreenState extends State<EditScreen> {
                 decoration: InputDecoration(labelText: 'Title'),
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (value) {
+                  print('test');
                   FocusScope.of(context).requestFocus(priceFocusNode);
                 },
                 initialValue: inItValues['title'],
                 validator: (value) {
+                  print('test2');
                   if (value.isEmpty) {
                     return "Title is required";
                   }
