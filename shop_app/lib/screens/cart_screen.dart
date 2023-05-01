@@ -12,6 +12,7 @@ class CartScreen extends StatelessWidget {
   build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
     final order = Provider.of<Orders>(context, listen: false);
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -50,11 +51,19 @@ class CartScreen extends StatelessWidget {
                         backgroundColor:
                             MaterialStateProperty.all<Color>(Colors.purple),
                       ),
-                      onPressed: () {
-                        order.addOrders(
-                            cart.getCartItems.values.toList(), cart.totalAmout);
-                        cart.clear();
-                        Navigator.of(context).pushNamed(OrderScreen.routeName);
+                      onPressed: () async {
+                        try {
+                          await order.addOrders(
+                              cart.getCartItems.values.toList(),
+                              cart.totalAmout);
+                          Navigator.of(context)
+                              .pushNamed(OrderScreen.routeName);
+                          cart.clear();
+                        } catch (error) {
+                          scaffoldMessenger.showSnackBar(SnackBar(
+                            content: Text('Check out failed, please try again'),
+                          ));
+                        }
                       }),
                 ],
               ),
