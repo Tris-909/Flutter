@@ -51,27 +51,29 @@ class Products with ChangeNotifier {
     return _items.firstWhere((item) => item.id == id);
   }
 
-  void addProduct(title, description, imageUrl, price) {
+  Future<void> addProduct(title, description, imageUrl, price) {
     final url = Uri.parse(
         'https://flutter-shop-app-23df4-default-rtdb.firebaseio.com/products.json');
-    http.post(url,
-        body: json.encode({
-          'title': title,
-          'description': description,
-          'price': price,
-          'imageUrl': imageUrl,
-          'isFavorite': false
-        }));
-
-    _items.add(Product(
-      id: DateTime.now().toString(),
-      description: description,
-      title: title,
-      price: price,
-      imageUrl: imageUrl,
-      isFavored: false,
-    ));
-    notifyListeners();
+    return http
+        .post(url,
+            body: json.encode({
+              'title': title,
+              'description': description,
+              'price': price,
+              'imageUrl': imageUrl,
+              'isFavorite': false
+            }))
+        .then((response) {
+      _items.add(Product(
+        id: json.decode(response.body)['name'],
+        description: description,
+        title: title,
+        price: price,
+        imageUrl: imageUrl,
+        isFavored: false,
+      ));
+      notifyListeners();
+    });
   }
 
   void updateProduct(id, editProduct) {
