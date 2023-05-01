@@ -99,11 +99,14 @@ class EditScreenState extends State<EditScreen> {
                   actions: [
                     TextButton(
                         onPressed: () {
-                          Navigator.of(context).pop();
-
                           setState(() {
                             isLoading = false;
                           });
+
+                          // Remove the AlertDialog
+                          Navigator.of(context).pop();
+
+                          // Remove the EditScreen implying that Edit has failed and go back to AdminScreen
                           Navigator.of(context).pop();
                         },
                         child: Text('Close')),

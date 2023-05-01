@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../widgets/productList.dart';
 import '../widgets/showNumberCart.dart';
+import '../providers/products.provider.dart';
 import '../providers/cart.provider.dart';
 import './cart_screen.dart';
 import '../widgets/appDrawer.dart';
@@ -18,11 +19,27 @@ class ProductOverviewScreen extends StatefulWidget {
 
 class ProductOverviewScreenState extends State {
   bool isShowingFavorites = false;
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    setState(() {
+      isLoading = true;
+    });
+
+    Provider.of<Products>(context, listen: false).getProducts().then(
+      (_) {
+        setState(() {
+          isLoading = false;
+        });
+      },
+    );
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final cart = Provider.of<Cart>(context, listen: false);
-
     return Scaffold(
       appBar: AppBar(
         title: Text('MyShop'),
@@ -68,7 +85,11 @@ class ProductOverviewScreenState extends State {
         ],
       ),
       drawer: AppDrawer(),
-      body: ProductGrid(isShowingFavorites),
+      body: isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ProductGrid(isShowingFavorites),
     );
   }
 }
