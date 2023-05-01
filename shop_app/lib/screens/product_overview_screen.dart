@@ -38,6 +38,18 @@ class ProductOverviewScreenState extends State {
     super.initState();
   }
 
+  Future<void> refreshListOfProducts() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    await Provider.of<Products>(context, listen: false).getProducts();
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,7 +101,9 @@ class ProductOverviewScreenState extends State {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : ProductGrid(isShowingFavorites),
+          : RefreshIndicator(
+              child: ProductGrid(isShowingFavorites),
+              onRefresh: refreshListOfProducts),
     );
   }
 }
