@@ -59,7 +59,7 @@ class EditScreenState extends State<EditScreen> {
     super.dispose();
   }
 
-  void saveForm(productsProvider) {
+  Future<void> saveForm(productsProvider) async {
     final invalid = form.currentState.validate();
     if (!invalid) {
       return null;
@@ -78,15 +78,20 @@ class EditScreenState extends State<EditScreen> {
       });
       Navigator.of(context).pop();
     } else {
-      productsProvider
-          .addProduct(
-        editProduct.title,
-        editProduct.description,
-        editProduct.imageUrl,
-        editProduct.price,
-      )
-          .catchError((error) {
-        return showDialog<Null>(
+      try {
+        await productsProvider.addProduct(
+          editProduct.title,
+          editProduct.description,
+          editProduct.imageUrl,
+          editProduct.price,
+        );
+
+        setState(() {
+          isLoading = false;
+        });
+        Navigator.of(context).pop();
+      } catch (error) {
+        showDialog<Null>(
             context: context,
             builder: (ctx) => AlertDialog(
                   title: Text('An error happens'),
@@ -95,16 +100,16 @@ class EditScreenState extends State<EditScreen> {
                     TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
+
+                          setState(() {
+                            isLoading = false;
+                          });
+                          Navigator.of(context).pop();
                         },
                         child: Text('Close')),
                   ],
                 ));
-      }).then((_) {
-        setState(() {
-          isLoading = false;
-        });
-        Navigator.of(context).pop();
-      });
+      }
     }
   }
 

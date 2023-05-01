@@ -51,19 +51,20 @@ class Products with ChangeNotifier {
     return _items.firstWhere((item) => item.id == id);
   }
 
-  Future<void> addProduct(title, description, imageUrl, price) {
-    final url = Uri.parse(
-        'https://flutter-shop-app-23df4-default-rtdb.firebaseio.com/products');
-    return http
-        .post(url,
-            body: json.encode({
-              'title': title,
-              'description': description,
-              'price': price,
-              'imageUrl': imageUrl,
-              'isFavorite': false
-            }))
-        .then((response) {
+  Future<void> addProduct(title, description, imageUrl, price) async {
+    try {
+      final url = Uri.parse(
+          'https://flutter-shop-app-23df4-default-rtdb.firebaseio.com/products.json');
+
+      final response = await http.post(url,
+          body: json.encode({
+            'title': title,
+            'description': description,
+            'price': price,
+            'imageUrl': imageUrl,
+            'isFavorite': false
+          }));
+
       _items.add(Product(
         id: json.decode(response.body)['name'],
         description: description,
@@ -72,11 +73,12 @@ class Products with ChangeNotifier {
         imageUrl: imageUrl,
         isFavored: false,
       ));
+
       notifyListeners();
-    }).catchError((error) {
+    } catch (error) {
       print(error);
       throw error;
-    });
+    }
   }
 
   void updateProduct(id, editProduct) {
