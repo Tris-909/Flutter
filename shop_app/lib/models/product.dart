@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Product with ChangeNotifier {
   @required
@@ -22,8 +24,26 @@ class Product with ChangeNotifier {
     this.isFavored = false,
   });
 
-  void toggleFavouriteStatus() {
-    isFavored = !isFavored;
-    notifyListeners();
+  Future<void> toggleFavouriteStatus(String productId) async {
+    final url = Uri.parse(
+        'https://flutter-shop-app-23df4-default-rtdb.firebaseio.com/products/${productId}.json');
+    final statusBeforeOperation = isFavored;
+
+    try {
+      isFavored = !statusBeforeOperation;
+      notifyListeners();
+
+      final response = await http.patch(url,
+          body: json.encode({'isFavorite': !statusBeforeOperation}));
+
+      print(json.decode(response.body));
+    } catch (error) {
+      print(error);
+
+      isFavored = statusBeforeOperation;
+      notifyListeners();
+
+      throw Exception('Failed to favor the product, please try again');
+    }
   }
 }
