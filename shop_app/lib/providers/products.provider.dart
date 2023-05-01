@@ -72,7 +72,20 @@ class Products with ChangeNotifier {
     }
   }
 
-  void updateProduct(id, editProduct) {
+  Future<void> updateProduct(id, editProduct) async {
+    final url = Uri.parse(
+        'https://flutter-shop-app-23df4-default-rtdb.firebaseio.com/products/${id}.json');
+
+    await http.patch(
+      url,
+      body: json.encode({
+        'title': editProduct.title,
+        'description': editProduct.description,
+        'imageUrl': editProduct.imageUrl,
+        'price': editProduct.price,
+      }),
+    );
+
     final productIndex = items.indexWhere((product) => product.id == id);
     _items[productIndex] = Product(
       id: id,
@@ -84,8 +97,30 @@ class Products with ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteProduct(id) {
-    _items.removeWhere((element) => element.id == id);
+  Future<void> deleteProduct(id) async {
+    final url = Uri.parse(
+        'https://flutter-shop-app-23df4-default-rtdb.firebaseio.com/products/${id}.json');
+
+    final readyToDeleteIndex = _items.indexWhere((element) => element.id == id);
+    // Save a copy of deleteItem before doing async operation to reverse the change in case it fails
+    var deleteItem = _items[readyToDeleteIndex];
+
+    _items.removeAt(readyToDeleteIndex);
+    notifyListeners();
+
+    final response = await http.delete(url);
+
+    if (response.statusCode >= 400) {
+      _items.insert(readyToDeleteIndex, deleteItem);
+      notifyListeners();
+
+      throw Exception('Cant delete the item for some reasons');
+    } else {
+      // Assign this item as null so Flutter will remove this since operation is success and we don't need this reference
+      // in the case it fails any longer
+      deleteItem = null;
+    }
+
     notifyListeners();
   }
 }

@@ -71,12 +71,8 @@ class EditScreenState extends State<EditScreen> {
     });
 
     if (isEditExistingProduct) {
-      Provider.of<Products>(context, listen: false)
+      await Provider.of<Products>(context, listen: false)
           .updateProduct(editProductItemId, editProduct);
-      setState(() {
-        isLoading = false;
-      });
-      Navigator.of(context).pop();
     } else {
       try {
         await productsProvider.addProduct(
@@ -85,11 +81,6 @@ class EditScreenState extends State<EditScreen> {
           editProduct.imageUrl,
           editProduct.price,
         );
-
-        setState(() {
-          isLoading = false;
-        });
-        Navigator.of(context).pop();
       } catch (error) {
         showDialog<Null>(
             context: context,
@@ -114,6 +105,11 @@ class EditScreenState extends State<EditScreen> {
                 ));
       }
     }
+
+    setState(() {
+      isLoading = false;
+    });
+    Navigator.of(context).pop();
   }
 
   @override

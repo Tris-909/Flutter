@@ -13,6 +13,7 @@ class AdminItem extends StatelessWidget {
   @override
   build(BuildContext context) {
     final productStore = Provider.of<Products>(context, listen: false);
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
 
     return ListTile(
       title: Text(title),
@@ -30,8 +31,14 @@ class AdminItem extends StatelessWidget {
                 },
                 icon: Icon(Icons.edit, color: Colors.blue)),
             IconButton(
-                onPressed: () {
-                  productStore.deleteProduct(id);
+                onPressed: () async {
+                  try {
+                    await productStore.deleteProduct(id);
+                  } catch (error) {
+                    scaffoldMessenger.showSnackBar(SnackBar(
+                      content: Text('Delete product failed'),
+                    ));
+                  }
                 },
                 icon: Icon(Icons.delete, color: Colors.red)),
           ],
