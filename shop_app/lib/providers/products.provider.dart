@@ -53,7 +53,7 @@ class Products with ChangeNotifier {
 
   Future<void> addProduct(title, description, imageUrl, price) {
     final url = Uri.parse(
-        'https://flutter-shop-app-23df4-default-rtdb.firebaseio.com/products.json');
+        'https://flutter-shop-app-23df4-default-rtdb.firebaseio.com/products');
     return http
         .post(url,
             body: json.encode({
@@ -73,6 +73,9 @@ class Products with ChangeNotifier {
         isFavored: false,
       ));
       notifyListeners();
+    }).catchError((error) {
+      print(error);
+      throw error;
     });
   }
 

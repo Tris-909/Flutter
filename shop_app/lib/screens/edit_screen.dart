@@ -85,7 +85,21 @@ class EditScreenState extends State<EditScreen> {
         editProduct.imageUrl,
         editProduct.price,
       )
-          .then((_) {
+          .catchError((error) {
+        return showDialog<Null>(
+            context: context,
+            builder: (ctx) => AlertDialog(
+                  title: Text('An error happens'),
+                  content: Text('Something went wrong, please try again'),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Close')),
+                  ],
+                ));
+      }).then((_) {
         setState(() {
           isLoading = false;
         });
