@@ -34,6 +34,7 @@ class Orders extends CartItem with ChangeNotifier {
         createdAt: DateTime.parse(productData['createdAt']),
       ));
     });
+
     orders = loadedOrders.toList();
     notifyListeners();
   }
