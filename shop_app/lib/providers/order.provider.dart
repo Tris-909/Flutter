@@ -11,6 +11,33 @@ class Orders extends CartItem with ChangeNotifier {
     return [...orders];
   }
 
+  Future<void> updateOrdersList() async {
+    final url = Uri.parse(
+        'https://flutter-shop-app-23df4-default-rtdb.firebaseio.com/orders.json');
+
+    final responses = await http.get(url);
+    final ordersFromResponses =
+        json.decode(responses.body) as Map<String, dynamic>;
+    final List<OrderItem> loadedOrders = [];
+    ordersFromResponses.forEach((productId, productData) {
+      loadedOrders.add(OrderItem(
+        id: productId,
+        amount: productData['amount'],
+        products: (productData['products'] as List<dynamic>)
+            .map((item) => CartItem(
+                  id: item['id'],
+                  price: item['price'],
+                  quantity: item['quantity'],
+                  title: item['title'],
+                ))
+            .toList(),
+        createdAt: DateTime.parse(productData['createdAt']),
+      ));
+    });
+    orders = loadedOrders.toList();
+    notifyListeners();
+  }
+
   Future<void> addOrders(List<CartItem> cartProducts, double total) async {
     final url = Uri.parse(
         'https://flutter-shop-app-23df4-default-rtdb.firebaseio.com/orders.json');
@@ -20,8 +47,14 @@ class Orders extends CartItem with ChangeNotifier {
           body: json.encode({
             'amount': total,
             'createdAt': DateTime.now().toString(),
-            'products':
-                (cartProducts.map((i) => i.toJson()).toList()).toString(),
+            'products': cartProducts
+                .map((cp) => {
+                      'id': cp.id,
+                      'title': cp.title,
+                      'quantity': cp.quantity,
+                      'price': cp.price,
+                    })
+                .toList(),
           }));
 
       orders.insert(
