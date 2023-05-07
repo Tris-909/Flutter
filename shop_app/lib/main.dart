@@ -5,9 +5,11 @@ import './screens/orders_screen.dart';
 import './screens/admin_screen.dart';
 import './screens/cart_screen.dart';
 import './screens/edit_screen.dart';
+import './screens/auth_screen.dart';
 import './providers/products.provider.dart';
 import './providers/cart.provider.dart';
 import './providers/order.provider.dart';
+import './providers/auth.provider.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
@@ -18,7 +20,11 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => Products(),
+          create: (_) => Auth(),
+        ),
+        ChangeNotifierProxyProvider<Auth, Products>(
+          update: (context, auth, previousProducts) => Products(auth.token,
+              previousProducts == null ? [] : previousProducts.items),
         ),
         ChangeNotifierProvider(
           create: (_) => Cart(),
@@ -27,21 +33,25 @@ class MyApp extends StatelessWidget {
           create: (_) => Orders(),
         ),
       ],
-      child: MaterialApp(
-        title: 'MyShop',
-        theme: ThemeData(
-            primarySwatch: Colors.purple,
-            accentColor: Colors.deepOrange,
-            fontFamily: 'Lato'),
-        home: ProductOverviewScreen(),
-        routes: {
-          ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
-          CartScreen.routeName: (ctx) => CartScreen(),
-          OrderScreen.routeName: (ctx) => OrderScreen(),
-          AdminScreen.routeName: (ctx) => AdminScreen(),
-          EditScreen.routeName: (ctx) => EditScreen(),
-        },
-      ),
+      child: Consumer<Auth>(
+          builder: (ctx, authData, _) => MaterialApp(
+                title: 'MyShop',
+                theme: ThemeData(
+                    primarySwatch: Colors.purple,
+                    accentColor: Colors.deepOrange,
+                    fontFamily: 'Lato'),
+                home: authData.isAuthenticated
+                    ? ProductOverviewScreen()
+                    : AuthScreen(),
+                routes: {
+                  AuthScreen.routeName: (ctx) => AuthScreen(),
+                  ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
+                  CartScreen.routeName: (ctx) => CartScreen(),
+                  OrderScreen.routeName: (ctx) => OrderScreen(),
+                  AdminScreen.routeName: (ctx) => AdminScreen(),
+                  EditScreen.routeName: (ctx) => EditScreen(),
+                },
+              )),
     );
   }
 }

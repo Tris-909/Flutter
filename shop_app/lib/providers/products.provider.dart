@@ -5,6 +5,9 @@ import 'dart:convert';
 
 class Products with ChangeNotifier {
   List<Product> _items = [];
+  final String authToken;
+
+  Products(this.authToken, this._items);
 
   List<Product> get items {
     return [..._items];
@@ -21,7 +24,7 @@ class Products with ChangeNotifier {
   Future<void> getProducts() async {
     try {
       final url = Uri.parse(
-          'https://flutter-shop-app-23df4-default-rtdb.firebaseio.com/products.json');
+          'https://flutter-shop-app-23df4-default-rtdb.firebaseio.com/products.json?auth=${authToken}');
 
       final result = await http.get(url);
       final extractedData = json.decode(result.body);
@@ -45,7 +48,7 @@ class Products with ChangeNotifier {
   Future<void> addProduct(title, description, imageUrl, price) async {
     try {
       final url = Uri.parse(
-          'https://flutter-shop-app-23df4-default-rtdb.firebaseio.com/products.json');
+          'https://flutter-shop-app-23df4-default-rtdb.firebaseio.com/products.json?auth=${authToken}');
 
       final response = await http.post(url,
           body: json.encode({
@@ -74,7 +77,7 @@ class Products with ChangeNotifier {
 
   Future<void> updateProduct(id, editProduct) async {
     final url = Uri.parse(
-        'https://flutter-shop-app-23df4-default-rtdb.firebaseio.com/products/${id}.json');
+        'https://flutter-shop-app-23df4-default-rtdb.firebaseio.com/products/${id}.json?auth=${authToken}');
 
     await http.patch(
       url,
@@ -99,7 +102,7 @@ class Products with ChangeNotifier {
 
   Future<void> deleteProduct(id) async {
     final url = Uri.parse(
-        'https://flutter-shop-app-23df4-default-rtdb.firebaseio.com/products/${id}.json');
+        'https://flutter-shop-app-23df4-default-rtdb.firebaseio.com/products/${id}.json?auth=${authToken}');
 
     final readyToDeleteIndex = _items.indexWhere((element) => element.id == id);
     // Save a copy of deleteItem before doing async operation to reverse the change in case it fails
